@@ -1,178 +1,196 @@
 /* Reset some default styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Set a background color and font for the entire page */
-  body {
-    font-family: "Comic Sans MS", cursive;
-    background-color: #3e04a9;
-    margin: 20px;
-    padding: 20px;
-  }
-  
-  /* Style the page title */
-  h2 {
-    font-family: "Comic Sans MS", cursive;
-    text-align: center;
-    background-color: #3e04a9;
-    font-size: medium;
-    padding: 10px;
-    margin: 0;
-    border-radius: 50px;
-  }
-  
-  /* Style the table */
-  table {
-    font-family: "Comic Sans MS", cursive;
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #c3b1e3;
-    border: 5px solid #3e04a9;
-  }
-  
-  th, td {
-    font-family: "Comic Sans MS", cursive;
-    padding: 10px;
-    text-align: center;
-    border: 3px dotted #daff08;
-  }
-  
-  th {
-    font-family: "Comic Sans MS", cursive;
-    background-color: #3e04a9;
-    color: #0dff00;
-    font-size:20px;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* Navbar styles */
+/* Set a background color and font for the entire page */
+body {
+  font-family: "Comic Sans MS", cursive;
+  background-color: #3e04a9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the page title */
+h2 {
+  font-family: "Comic Sans MS", cursive;
+  text-align: center;
+  background-color: #3e04a9;
+  font-size: medium;
+  padding: 10px;
+  margin: 0;
+  border-radius: 50px;
+}
+
+/* Style the table */
+table {
+  font-family: "Comic Sans MS", cursive;
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #c3b1e3;
+  border: 5px solid #3e04a9;
+}
+
+th, td {
+  font-family: "Comic Sans MS", cursive;
+  padding: 10px;
+  text-align: center;
+  border: 3px dotted #daff08;
+}
+
+th {
+  font-family: "Comic Sans MS", cursive;
+  background-color: #3e04a9;
+  color: #0dff00;
+  font-size: 20px;
+}
+
 /* Navbar styles */
 .navbar {
-    font-family: "Comic Sans MS", cursive;
-    background-color: #3e04a9;
-    border-color: #3e04a9; 
-    border: #3e04a9;
-
+  font-family: "Comic Sans MS", cursive;
+  background-color: #3e04a9;
+  border-color: #3e04a9;
+  border: #3e04a9;
 }
 
 .navbar-toggler-icon {
-    background-color: #06e30d;
-    border: 2px solid #6600cc;
-    border-radius: 50%;
-    padding: 5px;
+  background-color: #06e30d;
+  border: 2px solid #6600cc;
+  border-radius: 50%;
+  padding: 5px;
 }
 
 .navbar-nav {
-    margin-left: auto; 
+  margin-left: auto;
 }
 
 /* Updated styles for navbar buttons with borders */
 .navbar-nav .nav-link {
-    color: #3e04a9;
-    font-size: 15px;
-    font-weight: bold;
-    transition: color 0.3s;
-    background-color: transparent; 
-    border: 2px solid #3e04a9; /* Add border to navbar buttons */
-    border-radius: 50px;
-    padding: 10px;
-    margin: 0 10px; 
+  color: #3e04a9;
+  font-size: 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+  background-color: transparent;
+  border: 2px solid #3e04a9;
+  border-radius: 50px;
+  padding: 10px;
+  margin: 0 10px;
 }
 
 .navbar-nav .nav-link:hover {
-    color: #0dff00;
-    border-color: #0dff00; /* Change border color on hover */
+  color: #0dff00;
+  border-color: #0dff00;
 }
 
 .nav-link.disabled {
-    color: #3e04a9;
+  color: #3e04a9;
 }
-
-  
-
-  
 
 /* Custom styles for the Delete Selected button */
 .deleteSelectedButton {
-    font-family: "Comic Sans MS", cursive;
-    background-color: #3e04a9;
-    background-size: 10px;
-    border: 10px;
-    margin: 24px;
-    padding: 20px;
-    color: rgb(255, 0, 0); 
-    border: none; 
-    cursor: pointer; 
-    border-radius: 50px;
-    position: absolute;
-    left: 730px; 
-    top:5px; 
+  font-family: "Comic Sans MS", cursive;
+  background-color: #3e04a9;
+  background-size: 10px;
+  border: 10px;
+  margin: 24px;
+  padding: 20px;
+  color: rgb(253, 14, 14);
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  position: absolute;
+  left: 1250px;
+  top: 350px;
 }
+
 /* Custom styles for the delete buttons */
 .deleteButton {
-    background-color: #3e04a9;
-    color: rgb(255, 0, 0); 
-    border-radius: 50px;
-    cursor: pointer;
-    margin-right: 5px;
-    font-family: "Comic Sans MS", cursive;
-    font-size: 20;
-    border: 10px;
-    margin: 2px;
-    padding: 10px;
-
+  background-color: #3e04a9;
+  color: rgb(255, 0, 0);
+  border-radius: 50px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-family: "Comic Sans MS", cursive;
+  font-size: 20px;
+  border: 10px;
+  margin: 2px;
+  padding: 10px;
 }
+
 /* Resize the navbar logo */
-.navbar-logo{
-    width: 130px; /* Adjust the width as needed */
-    height: 130px; /* Maintain the aspect ratio */
-    image-resolution: 1080px;
-    border-radius: 50px;
+.navbar-logo {
+  width: 130px;
+  height: 130px;
+  image-resolution: 1080px;
+  border-radius: 50px;
 }
 
+/* Background image for body */
 body {
-    font-family: "Comic Sans MS", cursive;
-    margin: 0;
-    padding: 0;
-    background-color: #3e04a9;
-    background-image: url('/static/cover.jpg'); /* Set the background image */
-    background-size: cover; /* Cover the entire viewport */
-    background-repeat: no-repeat; /* Prevent image from repeating */
-    image-resolution: 3000px;
+  font-family: "Comic Sans MS", cursive;
+  margin: 0;
+  padding: 0;
+  background-color: #3e04a9;
+  background-image: url('cover.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-resolution: 3000px;
 }
 #div2 {
-    background-color: #c3b1e3; /* רקע גידול */
-    padding: 20px; /* מרווח בתוך ה-div */
-    border: 2px solid #3e04a9; /* מסגרת */
-    border-radius: 10px; /* רינועים מעגליים למסגרת */
-    width: 80%;
-    position: absolute;
-    left: 130px; 
-    top:80px
+  margin: 20px; /* הוספתי התיקון הזה כדי ליצור מרווח מסביב לכל האלמנטים ב־div2 */
+}
 
-  
-   
-  }
+#div2 input[type="text"],
+#div2 input[type="date"],
+#div2 select {
+  display: block; /* הצגת האלמנטים בשורות נפרדות */
+  margin: 10px 0; /* מרווח בין השדות */
+  padding: 10px; /* ריווח בתוך השדות */
+  border: 1px solid #3e04a9; /* מסגרת סביב השדות */
+  border-radius: 5px; /* פינות מעוגלות לשדות */
+  width: 100%; /* אורך השדות ימלא את רוחב ה־div */
+  font-family: "Comic Sans MS", cursive; /* גופן כתוב בכדיות עבור השדות */
+  font-size: 16px; /* גודל טקסט עבור השדות */
+}
 
-  /* CSS עבור כפתור ההוספה בתוך div2 */
-  #div2 button {
-    background-color: #008CBA; /* רקע לכפתור */
-    color: white; /* צבע הטקסט בכפתור */
-    border: none; /* מסגרת לא נראית */
-    padding: 10px 20px; /* מרווח בפנים הכפתור */
-    border-radius: 5px; /* רינועים מעגליים לכפתור */
-    cursor: pointer; /* משתנה לסמן יד */
-  }
+#div2 select {
+  width: 100%; /* גם כאן, ימלא את רוחב ה־div */
+}
 
+#div2 button {
+  display: block; /* הצגת הכפתור בשורה נפרדת */
+  margin: 10px 0; /* מרווח בין הכפתור לשדות */
+  padding: 2px; /* ריווח בתוך הכפתור */
+  border: none; /* הסרת המסגרת מסביב לכפתור */
+  border-radius: 5px; /* פינות מעוגלות לכפתור */
+  background-color: #3e04a9; /* צביעת רקע לכפתור */
+  color: #ffffff; /* צביעת טקסט בלבן */
+  cursor: pointer; /* שינוי לאייקון העכבר בלחיצה על הכפתור */
+  width: 100%; /* אורך הכפתור ימלא את רוחב ה־div */
+  font-family: "Comic Sans MS", cursive; /* גופן כתוב בכדיות עבור הכפתור */
+  font-size: 16px; /* גודל טקסט עבור הכפתור */
+}
 
-  #div2 input {
-    width: 50%; /* רוחב מלא */
-    padding: 10px; /* מרווח בתוך ה-input */
-    margin: 5px 0; /* מרווח בין ה-inputs */
-    border: 1px solid #ccc; /* מסגרת דקה */
-    border-radius: 5px; /* רינועים מעגליים ל-inputs */
-  }
+#div2 button:hover {
+  background-color: #0dff00; /* שינוי צבע הרקע עכשיו */
+}
+#div2 input::placeholder,
+#div2 select::placeholder {
+  color:rgb(0, 0, 0) /* הצבע שאתה רוצה להשתמש בו */
+}
+#div2 input,
+#div2 select {
+  background-color:#b47cb6 /* הצבע שאתה רוצה להשתמש בו */
+}
+
+.page-title {
+  background-color: #6600cc;
+  background-size: cover;
+  background-position: center;
+  color: #fff; /* צבע הטקסט */
+  padding: 20px; /* הזמן פנימי מסביב לטקסט */
+  margin: 0; /* מרווח מסביב לאלמנט */
+}

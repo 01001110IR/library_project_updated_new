@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/library_project_updated/static/bookspage.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7Rxnatzjc9SCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <title>All Data</title>
+    
+</head>
+<body>
+      <h1 class="page-title">All Customers</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>ID Number</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody id="customerTableBody"></tbody>
+    </table>
+
+    <h1 class="page-title">All Books</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>ID</th>
+                <th>Loan Type<</th>
+                <th>Name</th>
+                <th>in stock</th>
+                <th>Year Published</th>
+            </tr>
+        </thead>
+        <tbody id="bookTableBody"></tbody>
+    </table>
+
+    <h1 class="page-title">All Loans</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Book ID</th>
+                <th>Customer ID</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody id="loanTableBody"></tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const MY_SERVER = 'http://127.0.0.1:5000'; // Update with your server URL
+
+        // Function to create a table row for customers, books, or loans
+        function createTableRow(data, tableBody) {
+            data.forEach(item => {
+                const row = document.createElement("tr");
+                for (const key in item) {
+                    const cell = document.createElement("td");
+                    cell.textContent = item[key];
+                    row.appendChild(cell);
+                }
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Get all customers
+        axios.get(`${MY_SERVER}/customers`)
+            .then(response => {
+                createTableRow(response.data, document.getElementById("customerTableBody"));
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // Get all books
+        axios.get(`${MY_SERVER}/books`)
+            .then(response => {
+                createTableRow(response.data, document.getElementById("bookTableBody"));
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // Get all loans
+        axios.get(`${MY_SERVER}/loans`)
+            .then(response => {
+                createTableRow(response.data, document.getElementById("loanTableBody"));
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>
