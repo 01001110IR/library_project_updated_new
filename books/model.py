@@ -10,5 +10,4 @@ class Book(db.Model):
     loan_type = db.Column(db.Integer, nullable=False)
     stock = db.Column(db.Integer, default=0)  # Add the 'stock' attribute with a default value
 
-    loans = db.relationship('Loan', backref='book', lazy='dynamic')
 

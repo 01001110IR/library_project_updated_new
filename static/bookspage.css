@@ -194,3 +194,28 @@ body {
   padding: 20px; /* הזמן פנימי מסביב לטקסט */
   margin: 0; /* מרווח מסביב לאלמנט */
 }
+/* Background image for the form and lists */
+#createLoanForm, #customersList, #booksList {
+  background-image: url('your-background-image.jpg'); /* Replace with the path to your background image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed; /* This makes the background image stay fixed */
+  padding: 20px; /* Add some padding to the form and lists for better readability */
+  border-radius: 10px; /* Add rounded corners for a nice look */
+}
+
+/* Set a background color for the form background if the image doesn't load */
+#createLoanForm {
+  background-color: #3e04a9; /* Replace with the color you prefer */
+}
+
+/* Set a background color for the lists background if the image doesn't load */
+#customersList, #booksList {
+  background-color: #3e04a9; /* Replace with the color you prefer */
+}
+
+/* Optional: You can also set a text color to make the text more visible */
+#createLoanForm, #customersList, #booksList {
+  color: #fff; /* Replace with the text color you prefer */
+}

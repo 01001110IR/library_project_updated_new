@@ -8,5 +8,3 @@ class Customer(db.Model):
     id_number = db.Column(db.String(20), nullable=False, unique=True)
     phone_number = db.Column(db.String(15))
 
-    # Define the relationship with Loan
-    loans = db.relationship('Loan', backref='related_customer', lazy=True)

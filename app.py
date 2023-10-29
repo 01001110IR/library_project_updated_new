@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for
 from flask_cors import CORS
 from flask_migrate import Migrate  # Import Migrate here
 from books.customersmodel import Customer
@@ -98,77 +98,68 @@ def delete_multiple_books():
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #?                         LOANS
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-@app.route('/loans', methods=['GET'])
-def get_loans():
-    loans = Loan.query.all()
-    loan_list = []
-    for loan in loans:
-        loan_dict = {
-            'id': loan.id,
-            'book_id': loan.book_id,
-            'customer_id': loan.customer_id,
-            'additional_fields': loan.additional_fields  # Update to directly access the field
-        }
-        loan_list.append(loan_dict)
-    return jsonify(loan_list)
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.exc import IntegrityError
+# Define a route to handle POST requests for creating loans
+@app.route('/confirm_loan', methods=['POST'])
+def handle_confirm_loan_request():
+    data = request.json  # Assuming the data sent in the request is in JSON format
+    # Add logic to create the loan, update the book stock, and respond with a success message
+    # Replace the following with your actual logic:
+    response_data = {'message': 'Loan created successfully'}  # Replace with the actual response data
+    return jsonify(response_data), 201
 
-from sqlalchemy.exc import IntegrityError  # Import IntegrityError
-
-@app.route('/loans', methods=['POST'])
-def create_loan():
+# Borrow a book
+@app.route('/borrow_book', methods=['POST'])
+def borrow_book():
     data = request.json
-    book_id = data['book_id']
-    customer_id = data['customer_id']
-
-    # Check if the book is in stock
+    book_id = data.get('book_id')
+    
+    # Check if the book exists
     book = Book.query.get(book_id)
     if not book:
         return jsonify({'message': 'Book not found'}), 404
-
-    if book.stock is not None:
-        if book.stock > 0:
-            # Check if the customer has already borrowed this book
-            existing_loan = Loan.query.filter_by(book_id=book_id, customer_id=customer_id, ).first()
-            if existing_loan:
-                return jsonify({'message': 'Customer has already borrowed this book'}), 400
-
-            new_loan = Loan(
-                book_id=book_id,
-                customer_id=customer_id,
-            )
-            db.session.add(new_loan)
-            try:
-                db.session.commit()
-                # Update book availability
-                book.stock -= 1  # Decrease the stock
-                return jsonify({'message': 'Loan created successfully'}), 201
-            except IntegrityError:
-                db.session.rollback()
-                return jsonify({'message': 'IntegrityError: Book is already on loan'}), 400
-        else:
-            return jsonify({'message': 'Book is not available for loan'}), 400
-    else:
-        return jsonify({'message': 'Stock information is not available for this book'}), 400
-
-
-@app.route('/loans/<int:loan_id>', methods=['PUT'])
-def update_loan(loan_id):
-    loan = Loan.query.get(loan_id)
-    if loan is None:
-        return jsonify({'message': 'Loan not found'}), 404
     
+    # Check if the book is in stock
+    if book.stock > 0:
+        # Create a new loan
+        new_loan = Loan(book_id=book_id, customer_id=data['customer_id'], due_date=data['due_date'])
+        db.session.add(new_loan)
+        
+        # Reduce book stock
+        book.stock -= 1
+        db.session.commit()
+        
+        return jsonify({'message': 'Book borrowed successfully'}), 201
+    else:
+        return jsonify({'message': 'Book is out of stock'}), 400
+
+# Return a book
+@app.route('/return_book', methods=['POST'])
+def return_book():
     data = request.json
-    # Update the loan fields
-    loan.book_id = data.get('book_id', loan.book_id)
-    loan.customer_id = data.get('customer_id', loan.customer_id)
-    loan.additional_fields = data.get('additional_fields', loan.additional_fields)  # Include additional_fields
-
-    db.session.commit()
-    return jsonify({'message': 'Loan updated successfully'})
-
-
+    book_id = data.get('book_id')
+    
+    # Check if the book exists
+    book = Book.query.get(book_id)
+    if not book:
+        return jsonify({'message': 'Book not found'}), 404
+    
+    # Check if the book is not already in stock
+    if book.stock < book.total_stock:
+        # Update the book stock and return the book
+        book.stock += 1
+        db.session.commit()
+        
+        # Delete the corresponding loan (assuming there is a loan associated with this book)
+        loan = Loan.query.filter_by(book_id=book_id, customer_id=data['customer_id']).first()
+        if loan:
+            db.session.delete(loan)
+            db.session.commit()
+            
+            return jsonify({'message': 'Book returned successfully'}), 200
+        else:
+            return jsonify({'message': 'No active loan found for this book and customer'}), 404
+    else:
+        return jsonify({'message': 'Book is already in stock'}), 400
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

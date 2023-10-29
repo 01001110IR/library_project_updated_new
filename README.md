@@ -1,8 +1,25 @@
-# library_project_updated
-# library_project_updated_new
+
+# Library Management System
+
+This project is a simple Library Management System that allows you to manage books, customers, and book loans.
+
+## Installation
+1. Install Python and Flask.
+2. Install required dependencies from the `requirements.txt` file by running `pip install -r requirements.txt`.
+3. Run the server using the command `python app.py`.
+
+## Usage
+- Open the main interface in a web browser at `http://localhost:5000`.
+- Create, update, and delete books and customers.
+- Borrow and return books.
 
 
-echo "# library_project_updated_new" >> README.md
+
+
+
+pip freeze > requirements.txt
+
+project_updated_new" >> README.md
 git init
 git add README.md
 git commit -m "first commit"
@@ -14,3 +31,10 @@ git push -u origin main
 git remote add origin https://github.com/01001110IR/library_project_updated_new.git
 git branch -M main
 git push -u origin main
+
+
+
+update git :
+git add .
+git commit -m
+git push origin main
