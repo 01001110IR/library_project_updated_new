@@ -1,221 +1,96 @@
-/* Reset some default styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* אנימציה לכפתורים */
+button.btn {
+  transition: background-color 0.3s;
 }
 
-/* Set a background color and font for the entire page */
+/* העלמה עדינה לפריטים בטבלה */
+.table tr {
+  transition: background-color 0.3s;
+}
+
+.table tr:hover {
+  background-color: #f242f2;
+}
 body {
-  font-family: "Comic Sans MS", cursive;
-  background-color: #3e04a9;
-  margin: 0;
-  padding: 0;
+  background-image: url('your-image-url.jpg');
+  background-size: cover;
 }
 
-/* Style the page title */
+
 h2 {
-  font-family: "Comic Sans MS", cursive;
-  text-align: center;
-  background-color: #3e04a9;
-  font-size: medium;
-  padding: 10px;
-  margin: 0;
-  border-radius: 50px;
+  font-size: 26px; /* גודל פונט גדול יותר לכותרות */
+  color: #007bff; /* צבע כחול חזק יותר לכותרות */
 }
+.container {
+  border-radius: 8px; /* עיגול קצוות יותר מובהק */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* צל עדין ורחב יותר */
+}
+     /* Global Styles */
+     body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+      color: #333333;
+      background-image: url('cover.jpg');
+      background-size: cover; /* Use 'cover' to make the image cover the entire background */
+      background-attachment: fixed; /* Optional - this keeps the background image fixed */
+    }
+    
+  h2 {
+      font-size: 24px;
+      color: #007bff;
+  }
 
-/* Style the table */
-table {
-  font-family: "Comic Sans MS", cursive;
-  width: 80%;
-  margin: 20px auto;
-  border-collapse: collapse;
-  background-color: #c3b1e3;
-  border: 5px solid #3e04a9;
-}
+  /* Header Styles */
+  .header {
+   
+      padding: 150px 0;
+      text-align: center;
+  }
+  .header h1 {
+      font-size: 36px;
+      color: #fff;
+      margin-bottom: 20px;
+  }
+  .header p {
+      font-size: 18px;
+      color: #fff;
+  }
 
-th, td {
-  font-family: "Comic Sans MS", cursive;
-  padding: 10px;
-  text-align: center;
-  border: 3px dotted #daff08;
-}
+  /* Navigation Styles */
+  .navbar {
+      background-color: transparent;
+      border-bottom: 1px solid #007bff;
+  }
+  .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: #007bff;
+  }
+  .navbar-nav {
+      margin-left: auto;
+  }
+  .nav-item {
+      margin-left: 20px;
+  }
 
-th {
-  font-family: "Comic Sans MS", cursive;
-  background-color: #3e04a9;
-  color: #0dff00;
-  font-size: 20px;
-}
-
-/* Navbar styles */
-.navbar {
-  font-family: "Comic Sans MS", cursive;
-  background-color: #3e04a9;
-  border-color: #3e04a9;
-  border: #3e04a9;
-}
-
-.navbar-toggler-icon {
-  background-color: #06e30d;
-  border: 2px solid #6600cc;
-  border-radius: 50%;
-  padding: 5px;
-}
-
-.navbar-nav {
-  margin-left: auto;
-}
-
-/* Updated styles for navbar buttons with borders */
-.navbar-nav .nav-link {
-  color: #3e04a9;
-  font-size: 15px;
-  font-weight: bold;
-  transition: color 0.3s;
-  background-color: transparent;
-  border: 2px solid #3e04a9;
-  border-radius: 50px;
-  padding: 10px;
-  margin: 0 10px;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #0dff00;
-  border-color: #0dff00;
-}
-
-.nav-link.disabled {
-  color: #3e04a9;
-}
-
-/* Custom styles for the Delete Selected button */
-.deleteSelectedButton {
-  font-family: "Comic Sans MS", cursive;
-  background-color: #3e04a9;
-  background-size: 10px;
-  border: 10px;
-  margin: 24px;
-  padding: 20px;
-  color: rgb(253, 14, 14);
-  border: none;
-  cursor: pointer;
-  border-radius: 50px;
-  position: absolute;
-  left: 1250px;
-  top: 350px;
-}
-
-/* Custom styles for the delete buttons */
-.deleteButton {
-  background-color: #3e04a9;
-  color: rgb(255, 0, 0);
-  border-radius: 50px;
-  cursor: pointer;
-  margin-right: 5px;
-  font-family: "Comic Sans MS", cursive;
-  font-size: 20px;
-  border: 10px;
-  margin: 2px;
-  padding: 10px;
-}
-
-/* Resize the navbar logo */
-.navbar-logo {
-  width: 130px;
-  height: 130px;
-  image-resolution: 1080px;
-  border-radius: 50px;
-}
-
-/* Background image for body */
-body {
-  font-family: "Comic Sans MS", cursive;
-  margin: 0;
-  padding: 0;
-  background-color: #3e04a9;
-  background-image: url('cover.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  image-resolution: 3000px;
-}
-#div2 {
-  margin: 20px; /* הוספתי התיקון הזה כדי ליצור מרווח מסביב לכל האלמנטים ב־div2 */
-}
-
-#div2 input[type="text"],
-#div2 input[type="date"],
-#div2 select {
-  display: block; /* הצגת האלמנטים בשורות נפרדות */
-  margin: 10px 0; /* מרווח בין השדות */
-  padding: 10px; /* ריווח בתוך השדות */
-  border: 1px solid #3e04a9; /* מסגרת סביב השדות */
-  border-radius: 5px; /* פינות מעוגלות לשדות */
-  width: 100%; /* אורך השדות ימלא את רוחב ה־div */
-  font-family: "Comic Sans MS", cursive; /* גופן כתוב בכדיות עבור השדות */
-  font-size: 16px; /* גודל טקסט עבור השדות */
-}
-
-#div2 select {
-  width: 100%; /* גם כאן, ימלא את רוחב ה־div */
-}
-
-#div2 button {
-  display: block; /* הצגת הכפתור בשורה נפרדת */
-  margin: 10px 0; /* מרווח בין הכפתור לשדות */
-  padding: 2px; /* ריווח בתוך הכפתור */
-  border: none; /* הסרת המסגרת מסביב לכפתור */
-  border-radius: 5px; /* פינות מעוגלות לכפתור */
-  background-color: #3e04a9; /* צביעת רקע לכפתור */
-  color: #ffffff; /* צביעת טקסט בלבן */
-  cursor: pointer; /* שינוי לאייקון העכבר בלחיצה על הכפתור */
-  width: 100%; /* אורך הכפתור ימלא את רוחב ה־div */
-  font-family: "Comic Sans MS", cursive; /* גופן כתוב בכדיות עבור הכפתור */
-  font-size: 16px; /* גודל טקסט עבור הכפתור */
-}
-
-#div2 button:hover {
-  background-color: #0dff00; /* שינוי צבע הרקע עכשיו */
-}
-#div2 input::placeholder,
-#div2 select::placeholder {
-  color:rgb(0, 0, 0) /* הצבע שאתה רוצה להשתמש בו */
-}
-#div2 input,
-#div2 select {
-  background-color:#b47cb6 /* הצבע שאתה רוצה להשתמש בו */
-}
-
-.page-title {
-  background-color: #6600cc;
-  background-size: cover;
-  background-position: center;
-  color: #fff; /* צבע הטקסט */
-  padding: 20px; /* הזמן פנימי מסביב לטקסט */
-  margin: 0; /* מרווח מסביב לאלמנט */
-}
-/* Background image for the form and lists */
-#createLoanForm, #customersList, #booksList {
-  background-image: url('your-background-image.jpg'); /* Replace with the path to your background image */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed; /* This makes the background image stay fixed */
-  padding: 20px; /* Add some padding to the form and lists for better readability */
-  border-radius: 10px; /* Add rounded corners for a nice look */
-}
-
-/* Set a background color for the form background if the image doesn't load */
-#createLoanForm {
-  background-color: #3e04a9; /* Replace with the color you prefer */
-}
-
-/* Set a background color for the lists background if the image doesn't load */
-#customersList, #booksList {
-  background-color: #3e04a9; /* Replace with the color you prefer */
-}
-
-/* Optional: You can also set a text color to make the text more visible */
-#createLoanForm, #customersList, #booksList {
-  color: #fff; /* Replace with the text color you prefer */
-}
+  /* Book Card Styles */
+  .book-card {
+      background-color: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .book-card img {
+      max-width: 100%;
+      height: auto;
+  }
+  .book-title {
+      font-size: 18px;
+      margin-top: 10px;
+  }
+  .book-author {
+      font-size: 16px;
+      color: #777;
+  }

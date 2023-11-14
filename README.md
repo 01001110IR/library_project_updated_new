@@ -38,3 +38,22 @@ update git :
 git add .
 git commit -m
 git push origin main
+
+
+
+
+# to use tunder :
+BOOK :
+{
+    "name": "Example Book Title",
+    "author": "Author Name",
+    "published_Year": "2021",
+    "book_Type": 1
+}
+
+CUSTOMERS:
+{
+    "name": "John Doe",
+    "age": 30,
+    "city": "New York"
+}

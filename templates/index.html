@@ -3,85 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="/library_project_updated/static/bookspage.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Book Management System (index)</title>
-
+    <title>Library Management System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <img class="navbar-logo" src="/library_project_updated_new/static/logo.png">
+<img id="im" src="/static/logo.png" alt="">
+<div class="container mt-5">
+    <!-- Section for Adding Books -->
+    <h2>Add Book</h2>
+    <form id="add-book-form" class="mb-4">
+        <input type="text" id="book-name" placeholder="Name" required>
+        <input type="text" id="book-author" placeholder="Author" required>
+        <input type="text" id="book-published-year" placeholder="Published Year" required>
+        <input type="number" id="book-type" placeholder="Book Type" required>
+        <select id="book-active">
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
 
-    
+    <!-- Table for Displaying Books -->
+    <h2>Library Books</h2>
+    <table id="books-table" class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Published Year</th>
+                <th>Book Type</th>
+                <th>Active</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Book items will be added here dynamically -->
+        </tbody>
+    </table>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/createL.html');"> All Data </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/post.html');"> Add Books </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/postC.html');"> Add Customer</a>
-        </li>
-      <li class="nav-item">
-    <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/create_loan.html');"> Create Loan </a>
-</li>
+    <!-- Section for Adding Customers -->
+    <h2>Add Customer</h2>
+    <form id="add-customer-form" class="mb-4">
+        <input type="text" id="customer-name" placeholder="Name" required>
+        <input type="number" id="customer-age" placeholder="Age" required>
+        <input type="text" id="customer-city" placeholder="City" required>
+        <button type="submit" class="btn btn-primary">Add Customer</button>
+    </form>
 
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/update_book.html');"> Update Book</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/updateC.html');"> Update Customer</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/update.html');"> Update Loan</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/DelGet.html');"> Books List & Delete Option <span class="sr-only"></span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/customersDelGet.html');"> Customer List & Delete Option <span class="sr-only"></span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadIframe('/library_project_updated/templates/update.html');"> Loans List & Delete Option <span class="sr-only"></span></a>
-        </li>
-    </ul>
-    
-      
-    </div>
-  </nav>
+    <!-- Table for Displaying Customers -->
+    <h2>Customers</h2>
+    <table id="customers-table" class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Customer items will be added here dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Section for Adding Loans -->
+    <h2>Add Loan</h2>
+    <form id="add-loan-form" class="mb-4">
+        <input type="number" id="loan-book-id" placeholder="Book ID" required>
+        <input type="number" id="loan-customer-id" placeholder="Customer ID" required>
+        <input type="date" id="loan-date" placeholder="Loan Date" required>
+        <button type="submit" class="btn btn-primary">Create Loan</button>
+    </form>
+
+    <!-- Table for Displaying Loans -->
+    <h2>Loans</h2>
+    <table id="loans-table" class="table">
+        <thead>
+            <tr>
+                <th>Loan ID</th>
+                <th>Book ID</th>
+                <th>Customer ID</th>
+                <th>Loan Date</th>
+                <th>Return Date</th>
+                <th>Return Date</th>
+                <th>Max Return Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loan items will be added here dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+
+<!-- Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+      const SERVER_URL = 'http://127.0.0.1:5000'; // Your server URL
   
-  <h2 style="color: chartreuse;">Library Management System</h2>
-  <iframe id="iframe" style="width: 100%; height: calc(100vh - 50px);" src="" title="Content"></iframe>
-
-  <script>
-    const iframe = document.getElementById('iframe');
-    const routes = {
-      '/library_project_updated/templates/DelGet.html': 'http://127.0.0.1:5501/library_project_updated/templates/DelGet.html',
-      '/library_project_updated/templates/post.html': 'http://127.0.0.1:5501/library_project_updated/templates/post.html', 
-      '/library_project_updated/templates/update.html': 'http://127.0.0.1:5501/library_project_updated//update.html', 
-      '/library_project_updated/templates/update_book.html':'http://127.0.0.1:5501/library_project_updated/templates/update_book.html',
-      '/library_project_updated/templates/customersDelGet.html':'http://127.0.0.1:5501/library_project_updated/templates/customersDelGet.html',
-      '/library_project_updated/templates/postC.html':'http://127.0.0.1:5501/library_project_updated/templates/postC.html',
-      '/library_project_updated/templates/updateC.html':'http://127.0.0.1:5501/library_project_updated/templates/updateC.html',
-      '/library_project_updated/templates/createL.html':'http://127.0.0.1:5501/library_project_updated/templates/createL.html',
-      '/library_project_updated/templates/create_loan.html':'http://127.0.0.1:5501/library_project_updated/templates/create_loan.html',}
-
-   
-
-    function loadIframe(route) {
-      if (routes.hasOwnProperty(route)) {
-        iframe.src = routes[route];
+      // Function to fetch and display books
+      async function displayBooks() {
+          try {
+              const response = await axios.get(`${SERVER_URL}/books`);
+              const books = response.data;
+              const booksTable = document.getElementById('books-table').getElementsByTagName('tbody')[0];
+              booksTable.innerHTML = ''; // Clear existing entries
+              books.forEach(book => {
+                  let row = booksTable.insertRow();
+                  row.innerHTML = `
+                      <td>${book.name}</td>
+                      <td>${book.author}</td>
+                      <td>${book.published_Year}</td>
+                      <td>${book.book_Type}</td>
+                      <td>${book.active}</td>
+                      <td>${book.id}</td>
+                  `;
+              });
+          } catch (error) {
+              console.error('Error fetching books:', error);
+          }
       }
+      
+  
+      document.getElementById('add-book-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    // Collect book data from the form
+    const bookData = {
+        name: document.getElementById('book-name').value,
+        author: document.getElementById('book-author').value,
+        published_Year: document.getElementById('book-published-year').value,
+        book_Type: document.getElementById('book-type').value,
+        active: document.getElementById('book-active').value
+    };
+
+    try {
+        await axios.post(`${SERVER_URL}/books`, bookData);
+        displayBooks(); // Refresh the list of books
+        showMessage(`Book '${bookData.name}' added successfully!`, true);
+    } catch (error) {
+        console.error('Error adding book:', error);
+        showMessage('Error adding book. Please try again.', false);
     }
+});
+
+      function showMessage(message, isSuccess) {
+    const messageElement = document.getElementById('message');
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.style.color = isSuccess ? 'green' : 'red';
+    } else {
+        console.error('Element for displaying messages is not found.');
+    }
+
+    console.log(message); // הדפסה לקונסול
+}
+        // שינוי בטיפול בטופס הספר
+        document.getElementById('add-book-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const bookData = {
+            // איסוף נתונים מהטופס...
+        };
+        try {
+            await axios.post(`${SERVER_URL}/books`, bookData);
+            displayBooks(); // רענון רשימת הספרים
+            showMessage(`הספר '${bookData.name}' הוסף בהצלחה!`, true);
+        } catch (error) {
+            console.error('Error adding book:', error);
+            showMessage('שגיאה בהוספת הספר. אנא נסה שנית.', false);
+        }
+    });
+
+      // Function to fetch and display customers
+      async function displayCustomers() {
+    try {
+        const response = await axios.get(`${SERVER_URL}/customers`);
+        const customers = response.data;
+        const customersTable = document.getElementById('customers-table').getElementsByTagName('tbody')[0];
+        customersTable.innerHTML = ''; // Clear existing entries
+        customers.forEach(customer => {
+            let row = customersTable.insertRow();
+            row.innerHTML = `
+                <td>${customer.name}</td>
+                <td>${customer.age}</td>
+                <td>${customer.city}</td>
+                <td>${customer.customer_id}</td> <!-- Added this line to display book ID -->
+            `;
+        });
+    } catch (error) {
+        console.error('Error fetching customers:', error);
+    }
+}
+
+// Function to handle form submission for adding a customer
+document.getElementById('add-customer-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    // Collect customer data from the form
+    const customerData = {
+        name: document.getElementById('customer-name').value,
+        age: document.getElementById('customer-age').value,
+        city: document.getElementById('customer-city').value
+    };
+
+    try {
+        await axios.post(`${SERVER_URL}/customers`, customerData);
+        displayCustomers(); // Refresh the list of customers
+    } catch (error) {
+        console.error('Error adding customer:', error);
+    }
+});
+
+// Function to fetch and display loans
+async function displayLoans() {
+    try {
+        const response = await axios.get(`${SERVER_URL}/loans`);
+        const loans = response.data;
+        const loansTable = document.getElementById('loans-table').getElementsByTagName('tbody')[0];
+        loansTable.innerHTML = ''; // Clear existing entries
+        loans.forEach(loan => {
+        let row = loansTable.insertRow();
+        row.innerHTML = `
+            <td>${loan.id}</td>
+            <td>${loan.book_id}</td>
+            <td>${loan.customer_id}</td>
+            <td>${loan.loan_date}</td>
+            <td>${loan.returnDate || ''}</td>
+            <td>${loan.maxReturnDate || ''}</td> <!-- Display maxReturnDate -->
+        `;
+    });
+    } catch (error) {
+        console.error('Error fetching loans:', error);
+    }
+}
+
+
+// Function to handle form submission for creating a loan
+document.getElementById('add-loan-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const loanData = {
+        book_id: document.getElementById('loan-book-id').value,
+        customer_id: document.getElementById('loan-customer-id').value,
+        loan_date: document.getElementById('loan-date').value
+    };
+
+    try {
+        await axios.post(`${SERVER_URL}/loans`, loanData);
+        displayLoans(); // Refresh the list of loans
+    } catch (error) {
+        console.error('Error creating loan:', error);
+    }
+});
+
+// Initial data load for all entities
+displayBooks();
+displayCustomers();
+displayLoans();
+
+// Function to handle form submission for creating a loan
+document.getElementById('add-loan-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        // Collect loan data from the form
+        const loanData = {
+            book_id: document.getElementById('loan-book-id').value,
+            customer_id: document.getElementById('loan-customer-id').value,
+            loan_date: document.getElementById('loan-date').value
+        };
+
+        try {
+            const response = await axios.post(`${SERVER_URL}/loans`, loanData);
+            
+            // Check the response status
+            if (response.status === 201) {
+                // Loan created successfully
+                displayLoans(); // Refresh the list of loans
+                alert('Loan created successfully!');
+            } else {
+                // Handle other statuses as needed
+                alert('Unexpected response from the server.');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                // Handle specific error (e.g., book not available)
+                alert('Error: ' + error.response.data.error);
+            } else {
+                // Handle general errors
+                console.error('Error creating loan:', error);
+                alert('Error creating loan. Please try again.');
+            }
+        }
+    });
+    
+    document.getElementById('add-book-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const bookData = {
+        name: document.getElementById('book-name').value,
+        author: document.getElementById('book-author').value,
+        published_Year: document.getElementById('book-published-year').value,
+        book_Type: document.getElementById('book-type').value,
+        active: document.getElementById('book-active').value
+    };
+
+    try {
+        const response = await axios.post(`${SERVER_URL}/books`, bookData);
+        if (response.status === 201) {
+            displayBooks(); // Refresh the list of books
+            alert(`Book '${bookData.name}' added successfully!`);
+        } else {
+            alert('Unexpected response from the server.');
+        }
+    } catch (error) {
+        console.error('Error adding book:', error);
+        alert('Error adding book. Please try again.');
+    }
+});
+document.getElementById('add-customer-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const customerData = {
+        name: document.getElementById('customer-name').value,
+        age: document.getElementById('customer-age').value,
+        city: document.getElementById('customer-city').value
+    };
+
+    try {
+        const response = await axios.post(`${SERVER_URL}/customers`, customerData);
+        if (response.status === 201) {
+            displayCustomers(); // Refresh the list of customers
+            alert(`Customer '${customerData.name}' added successfully!`);
+        } else {
+            alert('Unexpected response from the server.');
+        }
+    } catch (error) {
+        console.error('Error adding customer:', error);
+        alert('Error adding customer. Please try again.');
+    }
+});
+
+
   </script>
 </body>
 </html>
