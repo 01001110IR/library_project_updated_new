@@ -12,7 +12,7 @@ def books():
             'id': book.id,
             'name': book.name,
             'author': book.author,
-            ' published_Year': book.published_Year,
+            'published_Year': book.published_Year,
             'book_Type': book.book_Type,            
             'active': book.active
         } for book in books]

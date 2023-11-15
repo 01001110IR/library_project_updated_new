@@ -21,6 +21,7 @@
             <option value="unavailable">Unavailable</option>
         </select>
         <button type="submit" class="btn btn-primary">Add Book</button>
+        
     </form>
 
     <!-- Table for Displaying Books -->
@@ -48,6 +49,8 @@
         <input type="number" id="customer-age" placeholder="Age" required>
         <input type="text" id="customer-city" placeholder="City" required>
         <button type="submit" class="btn btn-primary">Add Customer</button>
+        <button id="delete-customer-button">del </button>
+
     </form>
 
     <!-- Table for Displaying Customers -->
@@ -102,16 +105,16 @@
 <!-- Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-      const SERVER_URL = 'http://127.0.0.1:5000'; // Your server URL
+      const SERVER_URL = 'http://127.0.0.1:7500'; // Your server URL
   
       // Function to fetch and display books
       async function displayBooks() {
           try {
-              const response = await axios.get(`${SERVER_URL}/books`);
+              const response = await axios.get(`${SERVER_URL}/books`); console.log(response.data);
               const books = response.data;
               const booksTable = document.getElementById('books-table').getElementsByTagName('tbody')[0];
               booksTable.innerHTML = ''; // Clear existing entries
-              books.forEach(book => {
+              books.forEach(book => {console.log(books);
                   let row = booksTable.insertRow();
                   row.innerHTML = `
                       <td>${book.name}</td>
@@ -126,8 +129,6 @@
               console.error('Error fetching books:', error);
           }
       }
-      
-  
       document.getElementById('add-book-form').addEventListener('submit', async function(event) {
     event.preventDefault();
     
@@ -149,34 +150,7 @@
         showMessage('Error adding book. Please try again.', false);
     }
 });
-
-      function showMessage(message, isSuccess) {
-    const messageElement = document.getElementById('message');
-    if (messageElement) {
-        messageElement.textContent = message;
-        messageElement.style.color = isSuccess ? 'green' : 'red';
-    } else {
-        console.error('Element for displaying messages is not found.');
-    }
-
-    console.log(message); // הדפסה לקונסול
-}
-        // שינוי בטיפול בטופס הספר
-        document.getElementById('add-book-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const bookData = {
-            // איסוף נתונים מהטופס...
-        };
-        try {
-            await axios.post(`${SERVER_URL}/books`, bookData);
-            displayBooks(); // רענון רשימת הספרים
-            showMessage(`הספר '${bookData.name}' הוסף בהצלחה!`, true);
-        } catch (error) {
-            console.error('Error adding book:', error);
-            showMessage('שגיאה בהוספת הספר. אנא נסה שנית.', false);
-        }
-    });
-
+   
       // Function to fetch and display customers
       async function displayCustomers() {
     try {
@@ -197,11 +171,10 @@
         console.error('Error fetching customers:', error);
     }
 }
-
 // Function to handle form submission for adding a customer
 document.getElementById('add-customer-form').addEventListener('submit', async function(event) {
     event.preventDefault();
-
+    
     // Collect customer data from the form
     const customerData = {
         name: document.getElementById('customer-name').value,
@@ -216,6 +189,8 @@ document.getElementById('add-customer-form').addEventListener('submit', async fu
         console.error('Error adding customer:', error);
     }
 });
+
+
 
 // Function to fetch and display loans
 async function displayLoans() {
@@ -240,29 +215,6 @@ async function displayLoans() {
     }
 }
 
-
-// Function to handle form submission for creating a loan
-document.getElementById('add-loan-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const loanData = {
-        book_id: document.getElementById('loan-book-id').value,
-        customer_id: document.getElementById('loan-customer-id').value,
-        loan_date: document.getElementById('loan-date').value
-    };
-
-    try {
-        await axios.post(`${SERVER_URL}/loans`, loanData);
-        displayLoans(); // Refresh the list of loans
-    } catch (error) {
-        console.error('Error creating loan:', error);
-    }
-});
-
-// Initial data load for all entities
-displayBooks();
-displayCustomers();
-displayLoans();
 
 // Function to handle form submission for creating a loan
 document.getElementById('add-loan-form').addEventListener('submit', async function(event) {
@@ -298,53 +250,11 @@ document.getElementById('add-loan-form').addEventListener('submit', async functi
             }
         }
     });
-    
-    document.getElementById('add-book-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
 
-    const bookData = {
-        name: document.getElementById('book-name').value,
-        author: document.getElementById('book-author').value,
-        published_Year: document.getElementById('book-published-year').value,
-        book_Type: document.getElementById('book-type').value,
-        active: document.getElementById('book-active').value
-    };
-
-    try {
-        const response = await axios.post(`${SERVER_URL}/books`, bookData);
-        if (response.status === 201) {
-            displayBooks(); // Refresh the list of books
-            alert(`Book '${bookData.name}' added successfully!`);
-        } else {
-            alert('Unexpected response from the server.');
-        }
-    } catch (error) {
-        console.error('Error adding book:', error);
-        alert('Error adding book. Please try again.');
-    }
-});
-document.getElementById('add-customer-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const customerData = {
-        name: document.getElementById('customer-name').value,
-        age: document.getElementById('customer-age').value,
-        city: document.getElementById('customer-city').value
-    };
-
-    try {
-        const response = await axios.post(`${SERVER_URL}/customers`, customerData);
-        if (response.status === 201) {
-            displayCustomers(); // Refresh the list of customers
-            alert(`Customer '${customerData.name}' added successfully!`);
-        } else {
-            alert('Unexpected response from the server.');
-        }
-    } catch (error) {
-        console.error('Error adding customer:', error);
-        alert('Error adding customer. Please try again.');
-    }
-});
+// Initial data load for all entities
+displayBooks();
+displayCustomers();
+displayLoans();
 
 
   </script>
