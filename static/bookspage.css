@@ -1,96 +1,126 @@
-/* אנימציה לכפתורים */
-button.btn {
-  transition: background-color 0.3s;
-}
-
-/* העלמה עדינה לפריטים בטבלה */
-.table tr {
-  transition: background-color 0.3s;
-}
-
-.table tr:hover {
-  background-color: #f242f2;
-}
 body {
-  background-image: url('your-image-url.jpg');
+  font-family:'Courier New', Courier, monospace; /* A more readable font */
+  background-image: url('library-background.jpg'); /* A relevant background image */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
+  color:#282a36; /* Darker text for better contras
+  t */
+  background-color: #000; /* Dracula background color */
+  color: #ad48ff; /* Light text for better readability */
 }
 
+.container {
+  background: rgba(5, 14, 73, 0.9); /* Semi-transparent Dracula theme for cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;}
+  @media screen and (max-width: 768px) {
+    #im {
+        width: 100px; /* Smaller logo for mobile */
+    }
+ 
 
 h2 {
-  font-size: 26px; /* גודל פונט גדול יותר לכותרות */
-  color: #007bff; /* צבע כחול חזק יותר לכותרות */
+  font-size: 30px;
+
+  color: #7bb7c5; /* Consistent theme color */
+  margin-bottom: 20px; /* Spacing below headings */
 }
-.container {
-  border-radius: 8px; /* עיגול קצוות יותר מובהק */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* צל עדין ורחב יותר */
+button.btn {
+  padding: 10px 15px; /* More padding for better size */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  background-color: #ff79c6; /* Dracula pink for buttons */
+  color: #282a36;
+  border: none;
 }
-     /* Global Styles */
-     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f8f9fa;
-      color: #333333;
-      background-image: url('cover.jpg');
-      background-size: cover; /* Use 'cover' to make the image cover the entire background */
-      background-attachment: fixed; /* Optional - this keeps the background image fixed */
-    }
-    
-  h2 {
-      font-size: 24px;
-      color: #007bff;
-  }
 
-  /* Header Styles */
-  .header {
-   
-      padding: 150px 0;
-      text-align: center;
-  }
-  .header h1 {
-      font-size: 36px;
-      color: #fff;
-      margin-bottom: 20px;
-  }
-  .header p {
-      font-size: 18px;
-      color: #fff;
-  }
+button.btn:hover {
+  background-color: #0056b3; /* Slightly darker shade on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+  background-color: #bd93f9;
+}
+.table tr:nth-child(odd) {
+  background-color: #ff0000; /* Light background for odd rows */
+}
+/* Form Inputs and Selects */
+input[type='text'], input[type='number'], input[type='date'], select {
+  background-color: #1131e3 !important;
+  color: #8fc0f2 !important;
+  border: 1px solid #6272a4 !important;
+  border-radius: 4px !important;
+}
 
-  /* Navigation Styles */
-  .navbar {
-      background-color: transparent;
-      border-bottom: 1px solid #007bff;
-  }
-  .navbar-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      color: #007bff;
-  }
-  .navbar-nav {
-      margin-left: auto;
-  }
-  .nav-item {
-      margin-left: 20px;
-  }
 
-  /* Book Card Styles */
-  .book-card {
-      background-color: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .book-card img {
-      max-width: 100%;
-      height: auto;
-  }
-  .book-title {
-      font-size: 18px;
-      margin-top: 10px;
-  }
-  .book-author {
-      font-size: 16px;
-      color: #777;
-  }
+.table tr:hover {
+  background-color: #00ff6a; }
+
+/* Style for primary action buttons (Add, Update) */
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for success action buttons (Update, Confirm) */
+.btn-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for edit buttons */
+.btn-edit {
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Style for delete buttons */
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Style for special buttons like return book in loans */
+.btn-warning {
+  background-color: #fd7e14;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* General button hover effect */
+button:hover {
+  opacity: 0.8;
+}
+
+  
+}
+#im {
+  display: block; /* Centers the image */
+  margin:  auto; /* Auto margins for horizontal centering */
+  width: 250px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+/* Table Styles */
+.table {
+  background-color: #27023e; /* Dracula themed table background */
+  color: #ff79c6;
+}

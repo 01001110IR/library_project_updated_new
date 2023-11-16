@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/bookspage.css">
 </head>
 <body>
 <img id="im" src="/static/logo.png" alt="">
@@ -21,6 +22,7 @@
             <option value="unavailable">Unavailable</option>
         </select>
         <button type="submit" class="btn btn-primary">Add Book</button>
+        <button id="update-book-button" class="btn btn-success" style="display: none;">Update Book</button>
         
     </form>
 
@@ -49,6 +51,7 @@
         <input type="number" id="customer-age" placeholder="Age" required>
         <input type="text" id="customer-city" placeholder="City" required>
         <button type="submit" class="btn btn-primary">Add Customer</button>
+        
 
     </form>
 
@@ -141,17 +144,9 @@
                 .catch(error => {
                     console.error('Error updating book:', error);
                 });
-        } else {
-            axios.post(`${SERVER_URL}/books`, bookData)
-                .then(response => {
-                    alert('Book added successfully!');
-                    resetFormAndButton();
-                })
-                .catch(error => {
-                    console.error('Error adding new book:', error);
-                });
-        }
-    });
+        }     });
+        
+  
 
     function resetFormAndButton() {
         document.getElementById('add-book-form').reset();
@@ -264,7 +259,7 @@ function resetForm() {
    function editcustomers(customerId) {
     alert("Please fill in the details in the correct fields");
 
-    axios.get(`${SERVER_URL}/customers/${customerId}`)
+    axios.put(`${SERVER_URL}/customers/${customerId}`)
         .then(response => {
             const customer = response.data;
             document.getElementById('customer-name').value = customer.name;
@@ -275,7 +270,7 @@ function resetForm() {
             submitButton.textContent = 'Update Customer';
             submitButton.setAttribute('data-editing-customer-id', customerId);
             submitButton.classList.remove('btn-primary'); // מסיר את הקלאס הקיים
-    submitButton.classList.add('btn-success'); // מוסיף קלאס חדש לכפתור
+            submitButton.classList.add('btn-success'); // מוסיף קלאס חדש לכפתור
         })
         .catch(error => {
             console.error('Error fetching customer details:', error);
@@ -381,39 +376,47 @@ async function displayLoans() {
 }
 
 
-// Function to handle form submission for creating a loan
+// // Function to handle form submission for creating a loan
 document.getElementById('add-loan-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        // Collect loan data from the form
+    const bookId = document.getElementById('loan-book-id').value;
+
+    try {
+        // בקש מידע על הספר מהשרת
+        const bookResponse = await axios.get(`${SERVER_URL}/books/${bookId}`);
+
+        // בדוק אם הספר זמין להשאלה
+        if (bookResponse.data.active !== 'available') {
+            alert('This book is not available for loan.');
+            return; // הפסק את התהליך
+        }
+
+        // אם הספר זמין, המשך בתהליך ההשאלה
         const loanData = {
-            book_id: document.getElementById('loan-book-id').value,
+            book_id: bookId,
             customer_id: document.getElementById('loan-customer-id').value,
             loan_date: document.getElementById('loan-date').value
         };
 
-        try {
-            const response = await axios.post(`${SERVER_URL}/loans`, loanData);
-            
-            // Check the response status
-            if (response.status === 201) {
-                // Loan created successfully
-                displayLoans(); // Refresh the list of loans
-                alert('Loan created successfully!');
-            } else {
-                // Handle other statuses as needed
-                alert('Unexpected response from the server.');
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                alert('book not available try another id ' + error.response.data.error);
-            } else {
-                // Handle general errors
-                console.error('Error creating loan:', error);
-                alert('Error creating loan. Please try again.');
-            }
+        const loanResponse = await axios.post(`${SERVER_URL}/loans`, loanData);
+        if (loanResponse.status === 201) {
+            displayLoans(); // Refresh the list of loans
+            alert('Loan created successfully!');
+        } else {
+            alert('Unexpected response from the server.');
         }
-    });
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            alert('Book not available, try another ID. Error: ' + error.response.data.error);
+        } else {
+            console.error('Error creating loan:', error);
+            alert('Error creating loan. Please try again.');
+        }
+    }
+});
+
+
     async function returnBook(loanId) {
     try {
         console.log(loanId);
