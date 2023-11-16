@@ -3,47 +3,41 @@ from datetime import timedelta
 from sqlalchemy import CheckConstraint, ForeignKeyConstraint
 from sqlalchemy.orm import relationship
 
+from datetime import datetime, timedelta
+
 class Loan(db.Model):
     __tablename__ = 'loans'
 
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
-    loan_date = db.Column(db.Date, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), nullable=False)
+    loan_date = db.Column(db.Date, nullable=False)
     returnDate = db.Column(db.Date, nullable=True)
-    maxReturnDate = db.Column(db.Date, nullable=True)  # Change nullable to True
-
-    # Data Integrity: Define a ForeignKeyConstraint to enforce the relationship
-    __table_args__ = (
-        ForeignKeyConstraint(['book_id'], ['books.id']),  # Corrected foreign key reference
-        ForeignKeyConstraint(['customer_id'], ['customers.customer_id']),
-    )
+    maxReturnDate = db.Column(db.Date, nullable=True)
 
     def __init__(self, book_id, customer_id, loan_date, returnDate=None):
         self.book_id = book_id
         self.customer_id = customer_id
         self.loan_date = loan_date
         self.returnDate = returnDate
-        self.maxReturnDate = None  # Initialize with None
+        self.maxReturnDate = self.calculate_max_return_date(book_id, loan_date)
 
-        # Fetch the book and update the maxReturnDate
+    def calculate_max_return_date(self, book_id, loan_date):
         book = Book.query.get(book_id)
         if book:
-            book.active = 'unavailable'  # Update the book's active status
-            self.set_max_return_date(book, loan_date)  # Calculate maxReturnDate
-            db.session.add(book)  # Add the updated book to the session
+            # Logic to determine maxReturnDate based on book type
+            if book.book_Type == 1:
+                return loan_date + timedelta(days=10)
+            elif book.book_Type == 2:
+                return loan_date + timedelta(days=5)
+            elif book.book_Type == 3:
+                return loan_date + timedelta(days=2)
+            else:
+                return loan_date + timedelta(days=10)  # Default duration
+        return None  # In case book is not found
 
-    def set_max_return_date(self, book, loan_date):
-        """Calculate and set the maximum return date based on book type."""
-        if book.book_Type == 1:
-            self.maxReturnDate = loan_date + timedelta(days=10)
-        elif book.book_Type == 2:
-            self.maxReturnDate = loan_date + timedelta(days=5)
-        elif book.book_Type == 3:
-            self.maxReturnDate = loan_date + timedelta(days=2)
-        else:
-            # Default logic if none of the types match
-            self.maxReturnDate = loan_date + timedelta(days=10)
+
+
 
 class Book(db.Model):
     __tablename__ = 'books'

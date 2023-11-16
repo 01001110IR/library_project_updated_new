@@ -6,73 +6,76 @@ from datetime import datetime, timedelta
 loan_blueprint = Blueprint('loan', __name__)
 
 @loan_blueprint.route('/loans', methods=['GET', 'POST'])
-def loans():
+@loan_blueprint.route('/loan/<int:loan_id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_loans(loan_id=None):
     if request.method == 'GET':
-        loans = Loan.query.all()
-        loan_list = [{
-            'id': loan.id,
-            'book_id': loan.book_id,
-            'customer_id': loan.customer_id,
-            'loan_date': loan.loan_date.isoformat(),
-            'returnDate': loan.returnDate.isoformat() if loan.returnDate else None,
-            'maxReturnDate': loan.maxReturnDate.isoformat() if loan.maxReturnDate else None  # Add maxReturnDate
-        } for loan in loans]
-        return jsonify(loan_list), 200
-    
-    if request.method == 'POST':
+        if loan_id is None:
+            # Get all loans
+            loans = Loan.query.all()
+            loan_list = [{
+                'id': loan.id,
+                'book_id': loan.book_id,
+                'customer_id': loan.customer_id,
+                'loan_date': loan.loan_date.isoformat(),
+                'returnDate': loan.returnDate.isoformat() if loan.returnDate else None,
+                'maxReturnDate': loan.maxReturnDate.isoformat() if loan.maxReturnDate else None
+            } for loan in loans]
+            return jsonify(loan_list), 200
+        else:
+            # Get a specific loan
+            loan = Loan.query.get_or_404(loan_id)
+            return jsonify({
+                'id': loan.id,
+                'book_id': loan.book_id,
+                'customer_id': loan.customer_id,
+                'loan_date': loan.loan_date.isoformat(),
+                'returnDate': loan.returnDate.isoformat() if loan.returnDate else None,
+                'maxReturnDate': loan.maxReturnDate.isoformat() if loan.maxReturnDate else None
+            }), 200
+
+    elif request.method == 'POST':
+        # Borrow a book (Create a new loan)
         data = request.json
         book_id = data.get('book_id')
-        book = Book.query.get(book_id)
-        if not book or book.active != 'available':
-            return jsonify({'error': 'Book is not available for loan'}), 400
-
+        customer_id = data.get('customer_id')
         loan_date = datetime.strptime(data.get('loan_date'), '%Y-%m-%d')
 
-        # Create a new loan
-        new_loan = Loan(book_id=book_id, customer_id=data.get('customer_id'), loan_date=loan_date)
-
+        new_loan = Loan(book_id=book_id, customer_id=customer_id, loan_date=loan_date)
         db.session.add(new_loan)
-        db.session.commit()
+        book = Book.query.get(new_loan.book_id)
+        book.active = 'Unavailable' 
 
+        db.session.commit()
+       
         return jsonify({
             'id': new_loan.id,
             'book_id': new_loan.book_id,
             'customer_id': new_loan.customer_id,
             'loan_date': new_loan.loan_date.isoformat(),
             'returnDate': new_loan.returnDate.isoformat() if new_loan.returnDate else None,
-            'maxReturnDate': new_loan.maxReturnDate.isoformat()  # Add maxReturnDate
+            'maxReturnDate': new_loan.maxReturnDate.isoformat() if new_loan.maxReturnDate else None
         }), 201
+        
+        
+        
+    elif request.method == 'DELETE':
+         loan = Loan.query.get(loan_id)
+         if loan is None:
+          return jsonify({'message': 'Loan not found'}), 404
+    
+         db.session.delete(loan)
+         db.session.commit()
+         return jsonify({'message': 'Loan deleted successfully'}), 200
 
-@loan_blueprint.route('/loan/<int:loan_id>', methods=['GET', 'PUT', 'DELETE'])
-def loan(loan_id):
+    
+@loan_blueprint.route('/loan/<int:loan_id>/return', methods=['PUT'])
+def return_loan(loan_id):
     loan = Loan.query.get_or_404(loan_id)
+    loan.returnDate = datetime.now()  # Set the return date to now
 
-    if request.method == 'GET':
-        return jsonify({
-            'id': loan.id,
-            'book_id': loan.book_id,
-            'customer_id': loan.customer_id,
+    book = Book.query.get(loan.book_id)
+    book.active = 'available'  # Update the book's status to available
 
-            'returnDate': loan.returnDate  
-        }), 200
-
-    if request.method == 'PUT':
-        data = request.json
-        loan.book_id = data.get('book_id', loan.book_id)
-        loan.customer_id = data.get('customer_id', loan.customer_id)
-
-        loan.returnDate = data.get('returnDate', loan.returnDate)  
-        db.session.commit()
-        return jsonify({
-            'id': loan.id,
-            'book_id': loan.book_id,
-            'customer_id': loan.customer_id,
-
-            'returnDate': loan.returnDate  
-        }), 200
-
-    if request.method == 'DELETE':
-        db.session.delete(loan)
-        db.session.commit()
-        return jsonify({}), 204
+    db.session.commit()
+    return jsonify({'message': 'Book returned successfully'}), 200
 

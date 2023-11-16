@@ -49,7 +49,6 @@
         <input type="number" id="customer-age" placeholder="Age" required>
         <input type="text" id="customer-city" placeholder="City" required>
         <button type="submit" class="btn btn-primary">Add Customer</button>
-        <button id="delete-customer-button">del </button>
 
     </form>
 
@@ -88,8 +87,8 @@
                 <th>Customer ID</th>
                 <th>Loan Date</th>
                 <th>Return Date</th>
-                <th>Return Date</th>
-                <th>Max Return Date</th>
+                <th>Max Return Date</th> <!-- New header for Max Return Date -->
+                <th>Return Now</th>
             </tr>
         </thead>
         <tbody>
@@ -105,53 +104,204 @@
 <!-- Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-      const SERVER_URL = 'http://127.0.0.1:7500'; // Your server URL
-  
-      // Function to fetch and display books
-      async function displayBooks() {
-          try {
-              const response = await axios.get(`${SERVER_URL}/books`); console.log(response.data);
-              const books = response.data;
-              const booksTable = document.getElementById('books-table').getElementsByTagName('tbody')[0];
-              booksTable.innerHTML = ''; // Clear existing entries
-              books.forEach(book => {console.log(books);
-                  let row = booksTable.insertRow();
-                  row.innerHTML = `
-                      <td>${book.name}</td>
-                      <td>${book.author}</td>
-                      <td>${book.published_Year}</td>
-                      <td>${book.book_Type}</td>
-                      <td>${book.active}</td>
-                      <td>${book.id}</td>
-                  `;
-              });
-          } catch (error) {
-              console.error('Error fetching books:', error);
-          }
-      }
-      document.getElementById('add-book-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    
-    // Collect book data from the form
-    const bookData = {
-        name: document.getElementById('book-name').value,
-        author: document.getElementById('book-author').value,
-        published_Year: document.getElementById('book-published-year').value,
-        book_Type: document.getElementById('book-type').value,
-        active: document.getElementById('book-active').value
-    };
+    const SERVER_URL = 'http://127.0.0.1:7500'; // Your server URL
 
-    try {
-        await axios.post(`${SERVER_URL}/books`, bookData);
-        displayBooks(); // Refresh the list of books
-        showMessage(`Book '${bookData.name}' added successfully!`, true);
-    } catch (error) {
-        console.error('Error adding book:', error);
-        showMessage('Error adding book. Please try again.', false);
+
+
+       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////                                    /////////////////////////////////////////////
+   ///////////////////////////////             BOOKS            ////////////////////////////////////////////
+  
+  
+
+   document.getElementById('add-book-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const isEditing = submitButton.hasAttribute('data-editing-book-id');
+        const bookId = isEditing ? submitButton.getAttribute('data-editing-book-id') : null;
+
+        const bookData = {
+            name: document.getElementById('book-name').value,
+            author: document.getElementById('book-author').value,
+            published_Year: document.getElementById('book-published-year').value,
+            book_Type: document.getElementById('book-type').value,
+            active: document.getElementById('book-active').value
+        };
+
+        console.log('Is Editing:', isEditing); // הדפסה לקונסול לבדיקה
+        console.log('Book ID:', bookId);       // הדפסה לקונסול לבדיקה
+
+        if (isEditing) {
+            axios.put(`${SERVER_URL}/books/${bookId}`, bookData)
+                .then(response => {
+                    alert('Book updated successfully!');
+                    resetFormAndButton();
+                })
+                .catch(error => {
+                    console.error('Error updating book:', error);
+                });
+        } else {
+            axios.post(`${SERVER_URL}/books`, bookData)
+                .then(response => {
+                    alert('Book added successfully!');
+                    resetFormAndButton();
+                })
+                .catch(error => {
+                    console.error('Error adding new book:', error);
+                });
+        }
+    });
+
+    function resetFormAndButton() {
+        document.getElementById('add-book-form').reset();
+        const submitButton = document.getElementById('add-book-form').querySelector('button[type="submit"]');
+        submitButton.textContent = 'Add Book';
+        submitButton.classList.remove('btn-success');
+        submitButton.classList.add('btn-primary');
+        submitButton.removeAttribute('data-editing-book-id');
     }
-});
-   
-      // Function to fetch and display customers
+
+    function editBook(bookId) {
+        axios.get(`${SERVER_URL}/books/${bookId}`)
+            .then(response => {
+                const book = response.data;
+                document.getElementById('book-name').value = book.name;
+                document.getElementById('book-author').value = book.author;
+                document.getElementById('book-published-year').value = book.published_Year;
+                document.getElementById('book-type').value = book.book_Type;
+                document.getElementById('book-active').value = book.active;
+
+                const submitButton = document.getElementById('add-book-form').querySelector('button[type="submit"]');
+                submitButton.textContent = 'Update Book';
+                submitButton.classList.remove('btn-primary');
+                submitButton.classList.add('btn-success');
+                submitButton.setAttribute('data-editing-book-id', bookId);
+            })
+            .catch(error => {
+                console.error('Error fetching book details:', error);
+                alert('Error fetching book details. Please try again.');
+            });
+    }
+
+    async function deleteBook(bookId) {
+    // Ask for confirmation from the user
+    const userConfirmed = confirm("Are you sure you want to delete this book?");
+    
+    if (userConfirmed) {
+        try {
+            // Send a DELETE request to the server with the specific book ID
+            await axios.delete(`${SERVER_URL}/books/${bookId}`);
+            // Reload the book list to reflect the deleted book
+            displayBooks();
+            // Show a success notification
+            showSuccessNotification('Book deleted successfully!');
+        } catch (error) {
+            console.error(`Error deleting book with ID ${bookId}:`, error);
+            // Show an error notification to the user
+            showErrorNotification(`Book deleted successfully! ${bookId}. `);
+        }
+    }
+}
+// Reset form to default state
+function resetForm() {
+    document.getElementById('add-book-form').reset();
+    const submitButton = document.getElementById('add-book-form').querySelector('button[type="submit"]');
+    submitButton.textContent = 'Add Book';
+    submitButton.removeAttribute('data-editing-book-id');
+}
+    // Function to fetch and display books
+    async function displayBooks() {
+        try {
+            const response = await axios.get(`${SERVER_URL}/books`);
+            const books = response.data;
+            const booksTable = document.getElementById('books-table').getElementsByTagName('tbody')[0];
+            booksTable.innerHTML = ''; // Clear existing entries
+            books.forEach(book => {
+                let row = booksTable.insertRow();
+                row.innerHTML = `
+                    <td>${book.name}</td>
+                    <td>${book.author}</td>
+                    <td>${book.published_Year}</td>
+                    <td>${book.book_Type}</td>
+                    <td>${book.active}</td>
+                    <td>${book.id}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editBook(${book.id})">Edit</button>
+                        <button onclick="deleteBook(${book.id})">Delete</button>
+                    </td>
+                `;
+            });
+        } catch (error) {
+            console.error('Error fetching books:', error);
+        }
+    }
+    // Event Listener for Adding a Book
+    document.getElementById('add-book-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const bookData = {
+            name: document.getElementById('book-name').value,
+            author: document.getElementById('book-author').value,
+            published_Year: document.getElementById('book-published-year').value,
+            book_Type: document.getElementById('book-type').value,
+            active: document.getElementById('book-active').value
+        };  try {
+            await axios.post(`${SERVER_URL}/books`, bookData);
+            displayBooks(); // Refresh the list of books
+            alert(`Book '${bookData.name}' added successfully!`);
+        } catch (error) {
+            console.error('Error adding book:', error);
+            alert('Error adding book. Please try again.');
+        }
+    });
+
+
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////                                    /////////////////////////////////////////////
+   ///////////////////////////////               CUSTOMERS             ////////////////////////////////////////////
+     
+   function editcustomers(customerId) {
+    alert("Please fill in the details in the correct fields");
+
+    axios.get(`${SERVER_URL}/customers/${customerId}`)
+        .then(response => {
+            const customer = response.data;
+            document.getElementById('customer-name').value = customer.name;
+            document.getElementById('customer-age').value = customer.age;
+            document.getElementById('customer-city').value = customer.city;
+
+            const submitButton = document.getElementById('add-customer-form').querySelector('button[type="submit"]');
+            submitButton.textContent = 'Update Customer';
+            submitButton.setAttribute('data-editing-customer-id', customerId);
+            submitButton.classList.remove('btn-primary'); // מסיר את הקלאס הקיים
+    submitButton.classList.add('btn-success'); // מוסיף קלאס חדש לכפתור
+        })
+        .catch(error => {
+            console.error('Error fetching customer details:', error);
+            alert('Error fetching customer details. Please try again.');
+        });
+}
+
+async function deletecustomers(customersId) {
+    const userConfirmed = confirm("Are you sure you want to delete this customer?");
+    if (userConfirmed) {
+        try {
+            await axios.delete(`${SERVER_URL}/customers/${customersId}`);
+            displayCustomers();
+            showSuccessNotification('Customer deleted successfully!');
+        }   catch (error) {
+            console.error(`Customer deleted successfully! ${customersId}:`, error);
+        }
+    }
+}
+
+function showErrorNotification(message) {
+    alert(message);
+}
+
+
+
       async function displayCustomers() {
     try {
         const response = await axios.get(`${SERVER_URL}/customers`);
@@ -164,16 +314,22 @@
                 <td>${customer.name}</td>
                 <td>${customer.age}</td>
                 <td>${customer.city}</td>
-                <td>${customer.customer_id}</td> <!-- Added this line to display book ID -->
+                <td>${customer.customer_id}</td>
+                <td>
+                        <button class="btn btn-primary btn-sm" onclick="editcustomers(${customer.customer_id})">Edit</button>
+                        <button onclick="deletecustomers(${customer.customer_id})">Delete</button>
+                    </td>
             `;
         });
     } catch (error) {
         console.error('Error fetching customers:', error);
     }
 }
+
 // Function to handle form submission for adding a customer
 document.getElementById('add-customer-form').addEventListener('submit', async function(event) {
     event.preventDefault();
+    
     
     // Collect customer data from the form
     const customerData = {
@@ -191,6 +347,11 @@ document.getElementById('add-customer-form').addEventListener('submit', async fu
 });
 
 
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////                                    /////////////////////////////////////////////
+   ///////////////////////////////               LOANS           ////////////////////////////////////////////
+     
+
 
 // Function to fetch and display loans
 async function displayLoans() {
@@ -200,16 +361,20 @@ async function displayLoans() {
         const loansTable = document.getElementById('loans-table').getElementsByTagName('tbody')[0];
         loansTable.innerHTML = ''; // Clear existing entries
         loans.forEach(loan => {
-        let row = loansTable.insertRow();
-        row.innerHTML = `
-            <td>${loan.id}</td>
-            <td>${loan.book_id}</td>
-            <td>${loan.customer_id}</td>
-            <td>${loan.loan_date}</td>
-            <td>${loan.returnDate || ''}</td>
-            <td>${loan.maxReturnDate || ''}</td> <!-- Display maxReturnDate -->
-        `;
-    });
+    let row = loansTable.insertRow();
+    row.innerHTML = `
+        <td>${loan.id}</td>
+        <td>${loan.book_id}</td>
+        <td>${loan.customer_id}</td>
+        <td>${loan.loan_date}</td>
+        <td>${loan.returnDate || ''}</td>
+        <td>${loan.maxReturnDate || ''}</td>
+        <td><button onclick="returnBook(${loan.id})" class="btn btn-warning">Return</button></td>
+        <td><button onclick="deleteLoan(${loan.id})" class="btn btn-danger">Delete</button></td>
+
+    `;
+});
+
     } catch (error) {
         console.error('Error fetching loans:', error);
     }
@@ -234,27 +399,62 @@ document.getElementById('add-loan-form').addEventListener('submit', async functi
             if (response.status === 201) {
                 // Loan created successfully
                 displayLoans(); // Refresh the list of loans
-                alert('Loan created successfully!');
+                showSuccessNotification('Loan created successfully!');
             } else {
                 // Handle other statuses as needed
-                alert('Unexpected response from the server.');
+                showSuccessNotification('Unexpected response from the server.');
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                // Handle specific error (e.g., book not available)
-                alert('Error: ' + error.response.data.error);
+                showSuccessNotification('book not available try another id ' + error.response.data.error);
             } else {
                 // Handle general errors
                 console.error('Error creating loan:', error);
-                alert('Error creating loan. Please try again.');
+                showSuccessNotification('Error creating loan. Please try again.');
             }
         }
     });
+    async function returnBook(loanId) {
+    try {
+        console.log(loanId);
+        // Send a PUT request to update the loan status
+        const response = await axios.put(`${SERVER_URL}/loan/${loanId}/return`);
+        console.log(response);
+        if (response.status === 200) {
+            showSuccessNotification('Book returned successfully!');
+            displayLoans(); // Refresh the list of loans
+        } else {
+            alert('Unexpected response from the server.');
+        }
+    } catch (error) {
+        console.error('Error returning book:', error);
+        showSuccessNotification('Error returning book. Please try again.');
+    }
+}
+async function deleteLoan(loanId) {
+    if(confirm("Are you sure you want to delete this loan?")) {
+        try {
+            const response = await axios.delete(`${SERVER_URL}/loan/${loanId}`);
+
+            if (response.status === 200) {
+                showSuccessNotification('Loan deleted successfully!');
+                displayLoans(); // Refresh the list of loans
+            } else {
+                showSuccessNotification('Unexpected response from the server.');
+            }
+        } catch (error) {
+            console.error('Error deleting loan:', error);
+            alert('Error deleting loan. Please try again.');
+        }
+    }
+}
+
 
 // Initial data load for all entities
 displayBooks();
 displayCustomers();
 displayLoans();
+
 
 
   </script>
