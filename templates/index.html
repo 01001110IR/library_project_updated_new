@@ -195,11 +195,11 @@
             // Reload the book list to reflect the deleted book
             displayBooks();
             // Show a success notification
-            showSuccessNotification('Book deleted successfully!');
+            alert('Book deleted successfully!');
         } catch (error) {
             console.error(`Error deleting book with ID ${bookId}:`, error);
             // Show an error notification to the user
-            showErrorNotification(`Book deleted successfully! ${bookId}. `);
+            alert(`Book deleted successfully! ${bookId}. `);
         }
     }
 }
@@ -289,7 +289,7 @@ async function deletecustomers(customersId) {
         try {
             await axios.delete(`${SERVER_URL}/customers/${customersId}`);
             displayCustomers();
-            showSuccessNotification('Customer deleted successfully!');
+            alert('Customer deleted successfully!');
         }   catch (error) {
             console.error(`Customer deleted successfully! ${customersId}:`, error);
         }
@@ -399,18 +399,18 @@ document.getElementById('add-loan-form').addEventListener('submit', async functi
             if (response.status === 201) {
                 // Loan created successfully
                 displayLoans(); // Refresh the list of loans
-                showSuccessNotification('Loan created successfully!');
+                alert('Loan created successfully!');
             } else {
                 // Handle other statuses as needed
-                showSuccessNotification('Unexpected response from the server.');
+                alert('Unexpected response from the server.');
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                showSuccessNotification('book not available try another id ' + error.response.data.error);
+                alert('book not available try another id ' + error.response.data.error);
             } else {
                 // Handle general errors
                 console.error('Error creating loan:', error);
-                showSuccessNotification('Error creating loan. Please try again.');
+                alert('Error creating loan. Please try again.');
             }
         }
     });
@@ -421,14 +421,14 @@ document.getElementById('add-loan-form').addEventListener('submit', async functi
         const response = await axios.put(`${SERVER_URL}/loan/${loanId}/return`);
         console.log(response);
         if (response.status === 200) {
-            showSuccessNotification('Book returned successfully!');
+            alert('Book returned successfully!');
             displayLoans(); // Refresh the list of loans
         } else {
             alert('Unexpected response from the server.');
         }
     } catch (error) {
         console.error('Error returning book:', error);
-        showSuccessNotification('Error returning book. Please try again.');
+        alert('Error returning book. Please try again.');
     }
 }
 async function deleteLoan(loanId) {
@@ -437,10 +437,10 @@ async function deleteLoan(loanId) {
             const response = await axios.delete(`${SERVER_URL}/loan/${loanId}`);
 
             if (response.status === 200) {
-                showSuccessNotification('Loan deleted successfully!');
+                alert('Loan deleted successfully!');
                 displayLoans(); // Refresh the list of loans
             } else {
-                showSuccessNotification('Unexpected response from the server.');
+                alert('Unexpected response from the server.');
             }
         } catch (error) {
             console.error('Error deleting loan:', error);
